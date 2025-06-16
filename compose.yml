@@ -1,5 +1,6 @@
 services:
   app-nginx:
+    container_name: app-nginx
     build:
       context: .
       dockerfile: ./docker/nginx/Dockerfile
@@ -12,6 +13,7 @@ services:
       - app-network
 
   app-php-fpm:
+    container_name: app-php-fpm
     build:
       context: .
       dockerfile: ./docker/php-fpm/Dockerfile
@@ -19,6 +21,14 @@ services:
       - "9000:9000"
     volumes:
       - ./src:/var/www/html
+    networks:
+      - app-network
+
+  app-redis:
+    image: redis:latest
+    container_name: app-redis
+    ports:
+      - "6379:6379"
     networks:
       - app-network
 
